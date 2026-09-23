@@ -4,7 +4,7 @@ set -euo pipefail
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 lab_dir="$repo_root/modules/SDN_Lab_5"
 topology="$lab_dir/topology.clab"
-node_image=${SDN_LAB_NODE_IMAGE:-ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest}
+node_image=${SDN_LAB_NODE_IMAGE:-ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest}
 jupyter_image=${JUPYTER_IMAGE:-ghcr.io/maintainer64/cms-labs-jupyter:latest}
 checker_image=${CHECKER_IMAGE:-ghcr.io/maintainer64/cms-labs-checker:latest}
 jupyter_name=cms-labs-jupyter

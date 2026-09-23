@@ -28,7 +28,7 @@
     "runtime": {
       "jupyterImage": "ghcr.io/maintainer64/cms-labs-jupyter:latest",
       "checkerImage": "ghcr.io/maintainer64/cms-labs-checker:latest",
-      "nodeImage": "ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest"
+      "nodeImage": "ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest"
     }
   }
 }

@@ -1,9 +1,9 @@
 # Описание SDN_Lab_5
 
-`cms-labs-tasks` сейчас содержит одну воспроизводимую лабораторную работу — `SDN_Lab_5`. Репозиторий можно указывать в `CMS_TASK_URL` полной GitHub-ссылкой:
+`cms-labs-simple-task` содержит одну воспроизводимую лабораторную работу — `SDN_Lab_5`. Репозиторий можно указывать в `CMS_TASK_URL` полной GitHub-ссылкой:
 
 ```text
-CMS_TASK_URL=https://github.com/maintainer64/cms-labs-tasks
+CMS_TASK_URL=https://github.com/maintainer64/cms-labs-simple-task
 ```
 
 Лаборатория размещается в `modules/SDN_Lab_5` и не является Git-подмодулем. Это позволяет Clabgate закрепить попытку на одном commit SHA и получить notebook, topology и метаданные согласованной версии.

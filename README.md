@@ -1,9 +1,9 @@
 # SDN_Lab_5 — CMS Labs
 
-[![CI](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/ci.yml/badge.svg)](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/codeql.yml/badge.svg)](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/codeql.yml)
+[![CI](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/ci.yml/badge.svg)](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/codeql.yml/badge.svg)](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/codeql.yml)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/maintainer64/cms-labs-tasks?quickstart=1)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/maintainer64/cms-labs-simple-task?quickstart=1)
 
 Это воспроизводимый стенд одной лабораторной работы CMS Labs. Сейчас Codespace и локальный Dev Container запускают именно `SDN_Lab_5`; новые работы (например, Bank) будут добавляться позже отдельными модулями. Лаборатория содержит:
 

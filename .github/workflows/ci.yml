@@ -49,12 +49,12 @@ jobs:
       - name: Build node image
         run: >-
           docker build
-          --tag ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest
+          --tag ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest
           modules/SDN_Lab_5/node
       - name: Verify node services
         run: |
           docker run --detach --privileged --name sdn-lab-node -p 18080:8080 \
-            ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest
+            ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest
           for attempt in $(seq 1 30); do
             curl --fail --silent http://127.0.0.1:18080/state > state.json && break
             sleep 1

@@ -2,7 +2,7 @@
   "apiVersion": "cms.labs/v1",
   "kind": "LabCatalog",
   "metadata": {
-    "name": "cms-labs-tasks",
+    "name": "cms-labs-simple-task",
     "title": "Примеры лабораторных работ CMS Labs",
     "description": "Registry лабораторных работ CMS Labs. Сейчас содержит один воспроизводимый модуль SDN_Lab_5; новые задания добавляются отдельными модулями."
   },

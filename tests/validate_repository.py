@@ -29,12 +29,12 @@ assert not missing, f"missing required files: {', '.join(missing)}"
 assert not list((ROOT / "modules").glob("**/.git")), "modules must not contain nested Git repositories"
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
-assert "https://codespaces.new/maintainer64/cms-labs-tasks?quickstart=1" in readme
+assert "https://codespaces.new/maintainer64/cms-labs-simple-task?quickstart=1" in readme
 assert "sdn_lab_5" in readme.lower()
 
 catalog = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))
 assert catalog["kind"] == "LabCatalog"
-assert catalog["metadata"]["name"] == "cms-labs-tasks"
+assert catalog["metadata"]["name"] == "cms-labs-simple-task"
 assert catalog["spec"]["types"]["subject"] == ["network-lab"]
 assert catalog["spec"]["types"]["interface"] == ["jupyter-notebook"]
 catalog_lab = catalog["spec"]["labs"][0]
@@ -61,7 +61,7 @@ template = (LAB / "topology.template.yaml").read_text(encoding="utf-8")
 for document in [topology, template]:
     assert "r1:" in document and "s1:" in document
     assert "r1:eth1" in document and "s1:eth1" in document
-    assert "cms-labs-tasks-sdn-lab-5-node:latest" in document
+    assert "cms-labs-simple-task-sdn-lab-5-node:latest" in document
 assert "name: $NAME" in template and "namespace: $NAME" in template
 yaml_files = sorted(path.name for path in LAB.rglob("*") if path.suffix.lower() in {".yaml", ".yml"})
 assert yaml_files == ["topology.template.yaml"], f"Clabgate would apply unexpected YAML files: {yaml_files}"
