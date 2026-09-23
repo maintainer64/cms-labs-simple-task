@@ -1,5 +1,5 @@
 {
-  "name": "CMS Labs / Containerlab",
+  "name": "SDN_Lab_5 / CMS Labs",
   "image": "ghcr.io/srl-labs/containerlab/devcontainer-dind-slim:latest",
   "runArgs": ["--privileged"],
   "hostRequirements": {

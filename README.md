@@ -1,11 +1,11 @@
-# CMS Labs Tasks: примеры лабораторных работ
+# SDN_Lab_5 — CMS Labs
 
 [![CI](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/ci.yml/badge.svg)](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/codeql.yml/badge.svg)](https://github.com/maintainer64/cms-labs-tasks/actions/workflows/codeql.yml)
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/maintainer64/cms-labs-tasks?quickstart=1)
 
-Это коллекция примеров лабораторных работ CMS Labs, которые можно выполнять в браузере или локально. Каждый модуль содержит:
+Это воспроизводимый стенд одной лабораторной работы CMS Labs. Сейчас Codespace и локальный Dev Container запускают именно `SDN_Lab_5`; новые работы (например, Bank) будут добавляться позже отдельными модулями. Лаборатория содержит:
 
 - Jupyter Notebook с описанием и заданиями;
 - topology для локального Containerlab и шаблон для Clabgate/Clabernetes;
@@ -13,13 +13,13 @@
 - имя отдельного checker, возвращающего структурированный JSON-отчёт;
 - автоматические проверки репозитория и полного жизненного цикла лаборатории.
 
-## Быстрый старт в GitHub
+## Быстрый старт в GitHub Codespaces
 
 1. Нажмите **Open in GitHub Codespaces**.
 2. Дождитесь сообщения `CMS Labs environment is ready` в терминале.
-3. Codespaces автоматически откроет JupyterLab на порту `8888`.
-4. Откройте `modules/SDN_Lab_5/Lab5.ipynb` и выполняйте задания.
-5. Запустите проверку:
+3. Codespaces автоматически поднимет topology из двух узлов и JupyterLab на порту `8888`.
+4. Откройте `modules/SDN_Lab_5/Lab5.ipynb` — это единственная лаборатория текущего Codespace.
+5. Выполните задания в Notebook и запустите проверку:
 
    ```bash
    ./scripts/lab check
@@ -33,6 +33,8 @@ Codespace автоматически запускает:
 - `ghcr.io/maintainer64/cms-labs-checker:latest` по команде проверки.
 
 Порт Jupyter остаётся приватным портом Codespace и защищается авторизацией GitHub. Внутренний Jupyter token отключён только внутри этого защищённого окружения.
+
+Production-кнопка CMS будет открывать тот же `Lab5.ipynb` через workspace session Clabgate. Codespace предназначен для самостоятельного выполнения работы, а CMS frontend — для запуска изолированной Kubernetes-попытки с тем же GitHub commit.
 
 ## Запуск на компьютере
 
@@ -55,13 +57,13 @@ Codespace автоматически запускает:
 
 На Linux с уже установленными Docker и Containerlab эти команды можно запускать напрямую без Dev Container.
 
-## Каталог лабораторных работ
+## Текущая лабораторная работа
 
 | Модуль | Тип | Тема | Среда | Проверка |
 |---|---|---|---|---|
 | `SDN_Lab_5` | `network-lab` | Автоматизация SSH и мониторинг SNMP | Jupyter + Containerlab/Clabernetes | `automatic-checker` |
 
-Откройте [`Lab5.ipynb`](modules/SDN_Lab_5/Lab5.ipynb), чтобы начать работу. Машиночитаемый список находится в [`catalog.json`](catalog.json), расширенное описание типов — в [`description.md`](description.md), а контракт модуля — в [`modules/SDN_Lab_5/lab.json`](modules/SDN_Lab_5/lab.json).
+Откройте [`Lab5.ipynb`](modules/SDN_Lab_5/Lab5.ipynb), чтобы начать работу. Контракт `SDN_Lab_5` находится в [`modules/SDN_Lab_5/lab.json`](modules/SDN_Lab_5/lab.json). [`catalog.json`](catalog.json) оставлен как будущий registry для следующих лабораторных.
 
 ## Production-контур
 
@@ -71,6 +73,6 @@ Codespace автоматически запускает:
 - Jupyter запускается из общего standalone-образа;
 - `TEST_PATH=sdn_lab_5` выбирает пакет `labs/sdnlab5` в общем checker-образе.
 
-Полный CMS backend и Moodle/LTI намеренно не запускаются внутри Codespace: их роль здесь заменяет локальный runner. Сама лабораторная topology, Jupyter и проверка совпадают с production-контрактом.
+Полный CMS backend и Moodle/LTI не нужны для решения учебного задания в Codespace. CMS frontend и Clabgate используют тот же session-протокол в Kubernetes-стенде API; topology, Jupyter и checker совпадают с production-контрактом.
 
 Внутри директории модуля единственным файлом `.yaml/.yml` является production-манифест. Это важно: Clabgate рекурсивно собирает все YAML из `labs_path` и применяет их как Kubernetes-ресурсы. Локальная topology поэтому имеет расширение `.clab`, а метаданные — `.json`.

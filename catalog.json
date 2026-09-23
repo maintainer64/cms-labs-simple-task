@@ -4,7 +4,7 @@
   "metadata": {
     "name": "cms-labs-tasks",
     "title": "Примеры лабораторных работ CMS Labs",
-    "description": "Каталог воспроизводимых лабораторных работ для запуска в GitHub Codespaces, локальном Dev Container и Kubernetes через Clabgate."
+    "description": "Registry лабораторных работ CMS Labs. Сейчас содержит один воспроизводимый модуль SDN_Lab_5; новые задания добавляются отдельными модулями."
   },
   "spec": {
     "types": {

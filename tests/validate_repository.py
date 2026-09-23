@@ -30,7 +30,7 @@ assert not list((ROOT / "modules").glob("**/.git")), "modules must not contain n
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
 assert "https://codespaces.new/maintainer64/cms-labs-tasks?quickstart=1" in readme
-assert "примеры лабораторных работ" in readme.lower()
+assert "sdn_lab_5" in readme.lower()
 
 catalog = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))
 assert catalog["kind"] == "LabCatalog"
