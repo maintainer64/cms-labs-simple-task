@@ -1,0 +1,32 @@
+name: sdn-lab-5
+
+mgmt:
+  network: cms-labs
+  ipv4-subnet: 172.31.55.0/24
+
+topology:
+  nodes:
+    r1:
+      kind: linux
+      image: ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest
+      mgmt-ipv4: 172.31.55.11
+      env:
+        LAB_PEER: 10.50.0.2
+      ports:
+        - 2201:22/tcp
+        - 1161:161/udp
+        - 18081:8080/tcp
+    s1:
+      kind: linux
+      image: ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest
+      mgmt-ipv4: 172.31.55.12
+      env:
+        LAB_PEER: 10.50.0.1
+      ports:
+        - 2202:22/tcp
+        - 1162:161/udp
+        - 18082:8080/tcp
+  links:
+    - endpoints:
+        - r1:eth1
+        - s1:eth1

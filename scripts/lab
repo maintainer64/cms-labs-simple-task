@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+lab_dir="$repo_root/modules/SDN_Lab_5"
+topology="$lab_dir/topology.clab"
+node_image=${SDN_LAB_NODE_IMAGE:-ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest}
+jupyter_image=${JUPYTER_IMAGE:-ghcr.io/maintainer64/cms-labs-jupyter:latest}
+checker_image=${CHECKER_IMAGE:-ghcr.io/maintainer64/cms-labs-checker:latest}
+jupyter_name=cms-labs-jupyter
+network_name=cms-labs
+
+containerlab() {
+  if command -v sudo >/dev/null 2>&1; then
+    sudo -E "$(command -v containerlab)" "$@"
+  else
+    command containerlab "$@"
+  fi
+}
+
+wait_for_jupyter() {
+  for _ in {1..60}; do
+    if curl --noproxy '*' --silent --fail --output /dev/null http://127.0.0.1:8888/lab; then
+      return 0
+    fi
+    sleep 1
+  done
+  docker logs "$jupyter_name" >&2 || true
+  printf 'JupyterLab did not become ready\n' >&2
+  return 1
+}
+
+build_node() {
+  docker build --pull --tag "$node_image" "$lab_dir/node"
+}
+
+deploy_topology() {
+  if docker inspect clab-sdn-lab-5-r1 >/dev/null 2>&1 && docker inspect clab-sdn-lab-5-s1 >/dev/null 2>&1; then
+    return 0
+  fi
+  containerlab deploy --topo "$topology"
+}
+
+start_jupyter() {
+  if docker inspect "$jupyter_name" >/dev/null 2>&1; then
+    if test "$(docker inspect --format '{{.State.Running}}' "$jupyter_name")" = true; then
+      return 0
+    fi
+    docker rm "$jupyter_name" >/dev/null
+  fi
+
+  docker run --detach \
+    --name "$jupyter_name" \
+    --network "$network_name" \
+    --publish 8888:8888 \
+    --env LAB_NODE_PREFIX=clab-sdn-lab-5 \
+    --volume "$lab_dir:/home/jovyan/work" \
+    "$jupyter_image" \
+    start-notebook.py \
+    --ServerApp.ip=0.0.0.0 \
+    --ServerApp.root_dir=/home/jovyan/work \
+    --ServerApp.allow_remote_access=True \
+    --IdentityProvider.token= >/dev/null
+  wait_for_jupyter
+}
+
+up() {
+  docker info >/dev/null
+  docker pull "$jupyter_image"
+  docker pull "$checker_image"
+  build_node
+  deploy_topology
+  start_jupyter
+  status
+}
+
+down() {
+  docker rm --force "$jupyter_name" >/dev/null 2>&1 || true
+  containerlab destroy --topo "$topology" --cleanup >/dev/null 2>&1 || true
+}
+
+status() {
+  containerlab inspect --topo "$topology" || true
+  docker ps --filter "name=$jupyter_name" --format 'Jupyter: {{.Status}} ({{.Image}})'
+}
+
+check() {
+  docker run --rm \
+    --network "$network_name" \
+    --env ATTEMPT_ID=local \
+    --env SESSION_ID=local \
+    --env SESSION_NAMESPACE=clab-sdn-lab-5 \
+    --env LAB_PATH=modules/SDN_Lab_5/Lab5.ipynb \
+    --env TEST_PATH=sdn_lab_5 \
+    "$checker_image" \
+    -output -
+}
+
+reset_lab() {
+  docker exec clab-sdn-lab-5-r1 ip address flush dev eth1
+  docker exec clab-sdn-lab-5-s1 ip address flush dev eth1
+}
+
+solve_lab() {
+  docker exec clab-sdn-lab-5-r1 ip address replace 10.50.0.1/30 dev eth1
+  docker exec clab-sdn-lab-5-r1 ip link set eth1 up
+  docker exec clab-sdn-lab-5-s1 ip address replace 10.50.0.2/30 dev eth1
+  docker exec clab-sdn-lab-5-s1 ip link set eth1 up
+}
+
+open_lab() {
+  if test -n "${CODESPACE_NAME:-}" && test -n "${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-}"; then
+    printf 'JupyterLab: https://%s-8888.%s/lab\n' "$CODESPACE_NAME" "$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN"
+  else
+    printf 'JupyterLab: http://127.0.0.1:8888/lab\n'
+  fi
+  printf 'Notebook: modules/SDN_Lab_5/Lab5.ipynb\n'
+}
+
+ensure() {
+  if ! docker inspect clab-sdn-lab-5-r1 >/dev/null 2>&1 || ! docker inspect "$jupyter_name" >/dev/null 2>&1; then
+    up
+  else
+    start_jupyter
+    status
+  fi
+}
+
+case "${1:-}" in
+  up) up ;;
+  down) down ;;
+  ensure) ensure ;;
+  status) status ;;
+  check) check ;;
+  reset) reset_lab ;;
+  solve) solve_lab ;;
+  open) open_lab ;;
+  *)
+    printf 'Usage: %s {up|down|ensure|status|check|reset|open}\n' "$0" >&2
+    exit 2
+    ;;
+esac

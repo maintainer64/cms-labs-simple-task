@@ -1,0 +1,27 @@
+{
+  "name": "CMS Labs / Containerlab",
+  "image": "ghcr.io/srl-labs/containerlab/devcontainer-dind-slim:latest",
+  "runArgs": ["--privileged"],
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": {
+      "label": "CMS Labs JupyterLab",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-toolsai.jupyter",
+        "srl-labs.vscode-containerlab"
+      ]
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "bash .devcontainer/post-start.sh"
+}

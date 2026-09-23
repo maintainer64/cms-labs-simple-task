@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  schedule:
+    - cron: "23 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Repository contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Validate repository and notebook
+        run: ./scripts/validate.sh
+      - name: Shellcheck
+        run: >-
+          shellcheck
+          .devcontainer/post-create.sh
+          .devcontainer/post-start.sh
+          scripts/lab
+          scripts/validate.sh
+          modules/SDN_Lab_5/node/entrypoint.sh
+      - name: Lint node Dockerfile
+        uses: hadolint/hadolint-action@v3.4.0
+        with:
+          dockerfile: modules/SDN_Lab_5/node/Dockerfile
+
+  node-image:
+    name: Lab node image smoke
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build node image
+        run: >-
+          docker build
+          --tag ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest
+          modules/SDN_Lab_5/node
+      - name: Verify node services
+        run: |
+          docker run --detach --privileged --name sdn-lab-node -p 18080:8080 \
+            ghcr.io/maintainer64/cms-labs-tasks-sdn-lab-5-node:latest
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:18080/state > state.json && break
+            sleep 1
+          done
+          jq -e '.services.ssh and .services.snmp and (.interfaces.eth0.addresses | length > 0)' state.json
+      - name: Node diagnostics
+        if: failure()
+        run: docker logs sdn-lab-node || true
+
+  e2e:
+    name: Codespace-equivalent lab lifecycle
+    needs: node-image
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install latest Containerlab
+        env:
+          SETUP_SSHD: "false"
+        run: curl --fail --silent --show-error --location https://containerlab.dev/setup | sudo -E bash -s "install-containerlab"
+      - name: Start topology and Jupyter
+        run: ./scripts/lab up
+      - name: Verify incomplete result
+        run: |
+          ./scripts/lab check > result-before.json
+          jq -e '.max_score == 5 and .current_score == 2 and (.tasks | length == 5)' result-before.json
+      - name: Apply the reference student configuration
+        run: ./scripts/lab solve
+      - name: Verify structured checker result
+        run: |
+          ./scripts/lab check > result.json
+          jq -e '
+            .max_score == 5 and
+            .current_score == 5 and
+            .result_display == "5/5 checks passed" and
+            (.report | length > 0) and
+            ([.tasks[].complete] | all)
+          ' result.json
+      - name: Verify JupyterLab
+        run: curl --noproxy '*' --fail --silent --show-error http://127.0.0.1:8888/lab >/dev/null
+      - name: Diagnostics
+        if: failure()
+        run: |
+          ./scripts/lab status || true
+          docker ps -a || true
+          docker logs cms-labs-jupyter || true
+          docker logs clab-sdn-lab-5-r1 || true
+          docker logs clab-sdn-lab-5-s1 || true
+      - name: Cleanup
+        if: always()
+        run: ./scripts/lab down
+
+  publish:
+    name: Publish multi-arch lab node
+    if: github.event_name != 'pull_request'
+    needs: e2e
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository }}-sdn-lab-5-node
+          tags: |
+            type=sha
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+      - name: Build and publish
+        uses: docker/build-push-action@v7
+        with:
+          context: modules/SDN_Lab_5/node
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: mode=max
+          sbom: true

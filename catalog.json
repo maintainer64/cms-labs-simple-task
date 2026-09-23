@@ -1,0 +1,49 @@
+{
+  "apiVersion": "cms.labs/v1",
+  "kind": "LabCatalog",
+  "metadata": {
+    "name": "cms-labs-tasks",
+    "title": "Примеры лабораторных работ CMS Labs",
+    "description": "Каталог воспроизводимых лабораторных работ для запуска в GitHub Codespaces, локальном Dev Container и Kubernetes через Clabgate."
+  },
+  "spec": {
+    "types": {
+      "subject": [
+        "network-lab"
+      ],
+      "interface": [
+        "jupyter-notebook"
+      ],
+      "topology": [
+        "containerlab",
+        "clabernetes"
+      ],
+      "assessment": [
+        "automatic-checker"
+      ],
+      "execution": [
+        "github-codespaces",
+        "local-devcontainer",
+        "clabgate-kubernetes"
+      ]
+    },
+    "labs": [
+      {
+        "id": "SDN_Lab_5",
+        "title": "Лабораторная работа 5: автоматизация SSH и мониторинг SNMP",
+        "description": "Настройка Linux-based сетевых узлов из Jupyter Notebook с автоматической проверкой результата.",
+        "path": "modules/SDN_Lab_5",
+        "metadataPath": "modules/SDN_Lab_5/lab.json",
+        "types": {
+          "subject": "network-lab",
+          "interface": "jupyter-notebook",
+          "topology": [
+            "containerlab",
+            "clabernetes"
+          ],
+          "assessment": "automatic-checker"
+        }
+      }
+    ]
+  }
+}

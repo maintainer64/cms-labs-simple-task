@@ -1,0 +1,41 @@
+# SDN_Lab_5
+
+Лабораторная работа демонстрирует один полный модуль CMS Labs: topology, Jupyter Notebook, отдельный checker и одинаковый сценарий для Codespaces и production Clabgate.
+
+## Цель
+
+С помощью Python и `paramiko` назначить IPv4-адреса двум Linux-based сетевым узлам, проверить связность и прочитать системные данные через SNMP.
+
+```text
+r1 eth1 (10.50.0.1/30) <------> (10.50.0.2/30) eth1 s1
+```
+
+Служебная management-сеть создаётся Containerlab автоматически и не оценивается.
+
+## Доступ к узлам
+
+| Узел | Имя внутри лаборатории | Пользователь | Пароль | SNMP community |
+|---|---|---|---|---|
+| Router | `clab-sdn-lab-5-r1` | `student` | `student` | `public` |
+| Switch | `clab-sdn-lab-5-s1` | `student` | `student` | `public` |
+
+В Kubernetes notebook автоматически использует сервисы `<namespace>-r1` и `<namespace>-s1`; менять код для production не требуется.
+
+## Задание
+
+1. Откройте `Lab5.ipynb`.
+2. Подключитесь к обоим узлам по SSH.
+3. Настройте `10.50.0.1/30` на `r1:eth1` и `10.50.0.2/30` на `s1:eth1`.
+4. Проверьте ICMP-связность в обе стороны.
+5. Получите `sysName.0` обоих узлов по SNMP.
+6. Запустите из терминала `./scripts/lab check`.
+
+Итоговый checker оценивает пять пунктов: оба адреса, связность, SSH и SNMP. Отчёт соответствует JSON-контракту, который Clabgate отправляет в CMS/Moodle/LTI.
+
+## Файлы
+
+- `Lab5.ipynb` — рабочая тетрадь студента;
+- `topology.clab` — локальный Containerlab/Codespaces; нестандартное расширение не даёт Clabgate применить файл как Kubernetes-манифест;
+- `topology.template.yaml` — production-шаблон Clabernetes;
+- `node/` — открытый образ учебного Linux-узла;
+- `lab.json` — метаданные обнаружения лаборатории.
