@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Validate repository and notebook
@@ -36,7 +36,7 @@ jobs:
           scripts/validate.sh
           task/node/entrypoint.sh
       - name: Lint node Dockerfile
-        uses: hadolint/hadolint-action@v3.4.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: task/node/Dockerfile
 
