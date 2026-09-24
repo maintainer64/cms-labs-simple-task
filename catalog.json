@@ -4,7 +4,7 @@
   "metadata": {
     "name": "cms-labs-simple-task",
     "title": "Примеры лабораторных работ CMS Labs",
-    "description": "Registry шаблонов заданий CMS Labs. Текущий репозиторий содержит один пример задания в modules/task."
+    "description": "Registry шаблонов заданий CMS Labs. Текущий репозиторий содержит один пример задания в task."
   },
   "spec": {
     "types": {
@@ -32,8 +32,8 @@
         "id": "task",
         "title": "Пример задания: автоматизация SSH и мониторинг SNMP",
         "description": "Настройка Linux-based сетевых узлов из Jupyter Notebook с автоматической проверкой результата.",
-        "path": "modules/task",
-        "metadataPath": "modules/task/lab.json",
+        "path": "task",
+        "metadataPath": "task/lab.json",
         "types": {
           "subject": "network-lab",
           "interface": "jupyter-notebook",

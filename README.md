@@ -18,7 +18,7 @@
 1. Нажмите **Open in GitHub Codespaces**.
 2. Дождитесь сообщения `CMS Labs environment is ready` в терминале.
 3. Codespaces автоматически поднимет topology из двух узлов и JupyterLab на порту `8888`.
-4. Откройте `modules/task/task.ipynb` — здесь находится условие и рабочая тетрадь задания.
+4. Откройте `task/task.ipynb` — здесь находится условие и рабочая тетрадь задания.
 5. Выполните задания в Notebook и запустите проверку:
 
    ```bash
@@ -63,7 +63,7 @@ Codespace автоматически запускает:
 |---|---|---|---|---|
 | `task` | `network-lab` | Автоматизация SSH и мониторинг SNMP | Jupyter + Containerlab/Clabernetes | `automatic-checker` |
 
-Описание задания и шаги выполнения находятся в [`modules/task/README.md`](modules/task/README.md). Рабочая тетрадь — [`task.ipynb`](modules/task/task.ipynb), контракт загрузки — [`modules/task/lab.json`](modules/task/lab.json). [`catalog.json`](catalog.json) оставлен как будущий registry шаблонов.
+Описание задания и шаги выполнения находятся в [`task/README.md`](task/README.md). Рабочая тетрадь — [`task.ipynb`](task/task.ipynb), контракт загрузки — [`task/lab.json`](task/lab.json). [`catalog.json`](catalog.json) оставлен как будущий registry шаблонов.
 
 ## Production-контур
 

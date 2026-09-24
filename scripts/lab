@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-lab_dir="$repo_root/modules/task"
+lab_dir="$repo_root/task"
 topology="$lab_dir/topology.clab"
 node_image=${SDN_LAB_NODE_IMAGE:-ghcr.io/maintainer64/cms-labs-simple-task-node:latest}
 jupyter_image=${JUPYTER_IMAGE:-ghcr.io/maintainer64/cms-labs-jupyter:latest}
@@ -90,7 +90,7 @@ check() {
     --env ATTEMPT_ID=local \
     --env SESSION_ID=local \
     --env SESSION_NAMESPACE=simple-task \
-    --env LAB_PATH=modules/task/task.ipynb \
+    --env LAB_PATH=task/task.ipynb \
     --env TEST_PATH=sdn_lab_5 \
     "$checker_image" \
     -output -
@@ -114,7 +114,7 @@ open_lab() {
   else
     printf 'JupyterLab: http://127.0.0.1:8888/lab\n'
   fi
-  printf 'Notebook: modules/task/task.ipynb\n'
+  printf 'Notebook: task/task.ipynb\n'
 }
 
 ensure() {

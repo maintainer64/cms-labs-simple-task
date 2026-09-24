@@ -6,7 +6,7 @@
 CMS_TASK_URL=https://github.com/maintainer64/cms-labs-simple-task
 ```
 
-Описание задания находится в `modules/task/README.md`, а рабочая тетрадь — в `modules/task/task.ipynb`. Clabgate использует `modules/task` как `labs_path`, закрепляет попытку на одном commit SHA и получает из него topology и метаданные согласованной версии.
+Описание задания находится в `task/README.md`, а рабочая тетрадь — в `task/task.ipynb`. Clabgate использует `task` как `labs_path`, закрепляет попытку на одном commit SHA и получает из него topology и метаданные согласованной версии.
 
 Задание можно открыть:
 

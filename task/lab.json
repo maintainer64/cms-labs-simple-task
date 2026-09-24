@@ -22,9 +22,9 @@
       "local-devcontainer",
       "clabgate-kubernetes"
     ],
-    "labPath": "modules/task/task.ipynb",
+    "labPath": "task/task.ipynb",
     "testPath": "sdn_lab_5",
-    "topologyPath": "modules/task/topology.template.yaml",
+    "topologyPath": "task/topology.template.yaml",
     "runtime": {
       "jupyterImage": "ghcr.io/maintainer64/cms-labs-jupyter:latest",
       "checkerImage": "ghcr.io/maintainer64/cms-labs-checker:latest",

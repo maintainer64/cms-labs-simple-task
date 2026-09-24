@@ -34,11 +34,11 @@ jobs:
           .devcontainer/post-start.sh
           scripts/lab
           scripts/validate.sh
-          modules/task/node/entrypoint.sh
+          task/node/entrypoint.sh
       - name: Lint node Dockerfile
         uses: hadolint/hadolint-action@v3.4.0
         with:
-          dockerfile: modules/task/node/Dockerfile
+          dockerfile: task/node/Dockerfile
 
   node-image:
     name: Lab node image smoke
@@ -50,7 +50,7 @@ jobs:
         run: >-
           docker build
           --tag ghcr.io/maintainer64/cms-labs-simple-task-node:latest
-          modules/task/node
+          task/node
       - name: Verify node services
         run: |
           docker run --detach --privileged --name sdn-lab-node -p 18080:8080 \
@@ -141,7 +141,7 @@ jobs:
       - name: Build and publish
         uses: docker/build-push-action@v7
         with:
-          context: modules/task/node
+          context: task/node
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

@@ -8,7 +8,7 @@ updates:
       actions:
         patterns: ["*"]
   - package-ecosystem: docker
-    directory: /modules/task/node
+    directory: /task/node
     schedule:
       interval: weekly
     groups:
