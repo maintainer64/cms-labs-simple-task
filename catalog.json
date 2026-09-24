@@ -4,7 +4,7 @@
   "metadata": {
     "name": "cms-labs-simple-task",
     "title": "Примеры лабораторных работ CMS Labs",
-    "description": "Registry лабораторных работ CMS Labs. Сейчас содержит один воспроизводимый модуль SDN_Lab_5; новые задания добавляются отдельными модулями."
+    "description": "Registry шаблонов заданий CMS Labs. Текущий репозиторий содержит один пример задания в modules/task."
   },
   "spec": {
     "types": {
@@ -29,11 +29,11 @@
     },
     "labs": [
       {
-        "id": "SDN_Lab_5",
-        "title": "Лабораторная работа 5: автоматизация SSH и мониторинг SNMP",
+        "id": "task",
+        "title": "Пример задания: автоматизация SSH и мониторинг SNMP",
         "description": "Настройка Linux-based сетевых узлов из Jupyter Notebook с автоматической проверкой результата.",
-        "path": "modules/SDN_Lab_5",
-        "metadataPath": "modules/SDN_Lab_5/lab.json",
+        "path": "modules/task",
+        "metadataPath": "modules/task/lab.json",
         "types": {
           "subject": "network-lab",
           "interface": "jupyter-notebook",

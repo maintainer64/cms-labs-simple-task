@@ -1,11 +1,11 @@
-# SDN_Lab_5 — CMS Labs
+# CMS Labs Simple Task
 
 [![CI](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/ci.yml/badge.svg)](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/codeql.yml/badge.svg)](https://github.com/maintainer64/cms-labs-simple-task/actions/workflows/codeql.yml)
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/maintainer64/cms-labs-simple-task?quickstart=1)
 
-Это воспроизводимый стенд одной лабораторной работы CMS Labs. Сейчас Codespace и локальный Dev Container запускают именно `SDN_Lab_5`; новые работы (например, Bank) будут добавляться позже отдельными модулями. Лаборатория содержит:
+Это воспроизводимый пример задания CMS Labs и шаблон для будущих лабораторных работ. Codespace и локальный Dev Container запускают это задание целиком; дополнительные задания позже можно будет добавить по той же структуре. Задание содержит:
 
 - Jupyter Notebook с описанием и заданиями;
 - topology для локального Containerlab и шаблон для Clabgate/Clabernetes;
@@ -18,7 +18,7 @@
 1. Нажмите **Open in GitHub Codespaces**.
 2. Дождитесь сообщения `CMS Labs environment is ready` в терминале.
 3. Codespaces автоматически поднимет topology из двух узлов и JupyterLab на порту `8888`.
-4. Откройте `modules/SDN_Lab_5/Lab5.ipynb` — это единственная лаборатория текущего Codespace.
+4. Откройте `modules/task/task.ipynb` — здесь находится условие и рабочая тетрадь задания.
 5. Выполните задания в Notebook и запустите проверку:
 
    ```bash
@@ -34,7 +34,7 @@ Codespace автоматически запускает:
 
 Порт Jupyter остаётся приватным портом Codespace и защищается авторизацией GitHub. Внутренний Jupyter token отключён только внутри этого защищённого окружения.
 
-Production-кнопка CMS будет открывать тот же `Lab5.ipynb` через workspace session Clabgate. Codespace предназначен для самостоятельного выполнения работы, а CMS frontend — для запуска изолированной Kubernetes-попытки с тем же GitHub commit.
+В CMS это же задание открывается через workspace session Clabgate. Codespace предназначен для самостоятельного запуска, а CMS frontend — для изолированной Kubernetes-попытки с тем же GitHub commit.
 
 ## Запуск на компьютере
 
@@ -61,9 +61,9 @@ Production-кнопка CMS будет открывать тот же `Lab5.ipyn
 
 | Модуль | Тип | Тема | Среда | Проверка |
 |---|---|---|---|---|
-| `SDN_Lab_5` | `network-lab` | Автоматизация SSH и мониторинг SNMP | Jupyter + Containerlab/Clabernetes | `automatic-checker` |
+| `task` | `network-lab` | Автоматизация SSH и мониторинг SNMP | Jupyter + Containerlab/Clabernetes | `automatic-checker` |
 
-Откройте [`Lab5.ipynb`](modules/SDN_Lab_5/Lab5.ipynb), чтобы начать работу. Контракт `SDN_Lab_5` находится в [`modules/SDN_Lab_5/lab.json`](modules/SDN_Lab_5/lab.json). [`catalog.json`](catalog.json) оставлен как будущий registry для следующих лабораторных.
+Описание задания и шаги выполнения находятся в [`modules/task/README.md`](modules/task/README.md). Рабочая тетрадь — [`task.ipynb`](modules/task/task.ipynb), контракт загрузки — [`modules/task/lab.json`](modules/task/lab.json). [`catalog.json`](catalog.json) оставлен как будущий registry шаблонов.
 
 ## Production-контур
 

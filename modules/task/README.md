@@ -1,6 +1,6 @@
-# SDN_Lab_5
+# Пример задания CMS Labs
 
-Лабораторная работа демонстрирует один полный модуль CMS Labs: topology, Jupyter Notebook, отдельный checker и одинаковый сценарий для Codespaces и production Clabgate.
+Это самостоятельный пример задания CMS Labs: описание, Jupyter Notebook, topology, отдельный checker и одинаковый сценарий для Codespaces и production Clabgate.
 
 ## Цель
 
@@ -16,14 +16,14 @@ r1 eth1 (10.50.0.1/30) <------> (10.50.0.2/30) eth1 s1
 
 | Узел | Имя внутри лаборатории | Пользователь | Пароль | SNMP community |
 |---|---|---|---|---|
-| Router | `clab-sdn-lab-5-r1` | `student` | `student` | `public` |
-| Switch | `clab-sdn-lab-5-s1` | `student` | `student` | `public` |
+| Router | `clab-simple-task-r1` | `student` | `student` | `public` |
+| Switch | `clab-simple-task-s1` | `student` | `student` | `public` |
 
 В Kubernetes notebook автоматически использует сервисы `<namespace>-r1` и `<namespace>-s1`; менять код для production не требуется.
 
 ## Задание
 
-1. Откройте `Lab5.ipynb`.
+1. Откройте `task.ipynb`.
 2. Подключитесь к обоим узлам по SSH.
 3. Настройте `10.50.0.1/30` на `r1:eth1` и `10.50.0.2/30` на `s1:eth1`.
 4. Проверьте ICMP-связность в обе стороны.
@@ -34,7 +34,7 @@ r1 eth1 (10.50.0.1/30) <------> (10.50.0.2/30) eth1 s1
 
 ## Файлы
 
-- `Lab5.ipynb` — рабочая тетрадь студента;
+- `task.ipynb` — описание задания и рабочая тетрадь студента;
 - `topology.clab` — локальный Containerlab/Codespaces; нестандартное расширение не даёт Clabgate применить файл как Kubernetes-манифест;
 - `topology.template.yaml` — production-шаблон Clabernetes;
 - `node/` — открытый образ учебного Linux-узла;

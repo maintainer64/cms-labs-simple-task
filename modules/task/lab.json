@@ -2,11 +2,11 @@
   "apiVersion": "cms.labs/v1",
   "kind": "Lab",
   "metadata": {
-    "name": "sdn-lab-5",
-    "moduleId": "SDN_Lab_5"
+    "name": "simple-task",
+    "moduleId": "task"
   },
   "spec": {
-    "title": "Лабораторная работа 5: автоматизация SSH и мониторинг SNMP",
+    "title": "Пример задания: автоматизация SSH и мониторинг SNMP",
     "description": "Настройка Linux-based сетевых узлов из Jupyter Notebook и автоматическая проверка результата.",
     "types": {
       "subject": "network-lab",
@@ -22,13 +22,13 @@
       "local-devcontainer",
       "clabgate-kubernetes"
     ],
-    "labPath": "modules/SDN_Lab_5/Lab5.ipynb",
+    "labPath": "modules/task/task.ipynb",
     "testPath": "sdn_lab_5",
-    "topologyPath": "modules/SDN_Lab_5/topology.template.yaml",
+    "topologyPath": "modules/task/topology.template.yaml",
     "runtime": {
       "jupyterImage": "ghcr.io/maintainer64/cms-labs-jupyter:latest",
       "checkerImage": "ghcr.io/maintainer64/cms-labs-checker:latest",
-      "nodeImage": "ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest"
+      "nodeImage": "ghcr.io/maintainer64/cms-labs-simple-task-node:latest"
     }
   }
 }

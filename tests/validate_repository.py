@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LAB = ROOT / "modules" / "SDN_Lab_5"
+LAB = ROOT / "modules" / "task"
 
 
 required = [
@@ -16,7 +16,7 @@ required = [
     ROOT / ".devcontainer" / "devcontainer.json",
     ROOT / "scripts" / "lab",
     LAB / "README.md",
-    LAB / "Lab5.ipynb",
+    LAB / "task.ipynb",
     LAB / "lab.json",
     LAB / "topology.clab",
     LAB / "topology.template.yaml",
@@ -30,7 +30,7 @@ assert not list((ROOT / "modules").glob("**/.git")), "modules must not contain n
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
 assert "https://codespaces.new/maintainer64/cms-labs-simple-task?quickstart=1" in readme
-assert "sdn_lab_5" in readme.lower()
+assert "modules/task" in readme.lower()
 
 catalog = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))
 assert catalog["kind"] == "LabCatalog"
@@ -38,8 +38,8 @@ assert catalog["metadata"]["name"] == "cms-labs-simple-task"
 assert catalog["spec"]["types"]["subject"] == ["network-lab"]
 assert catalog["spec"]["types"]["interface"] == ["jupyter-notebook"]
 catalog_lab = catalog["spec"]["labs"][0]
-assert catalog_lab["id"] == "SDN_Lab_5"
-assert catalog_lab["metadataPath"] == "modules/SDN_Lab_5/lab.json"
+assert catalog_lab["id"] == "task"
+assert catalog_lab["metadataPath"] == "modules/task/lab.json"
 
 devcontainer = json.loads((ROOT / ".devcontainer" / "devcontainer.json").read_text(encoding="utf-8"))
 assert devcontainer["image"] == "ghcr.io/srl-labs/containerlab/devcontainer-dind-slim:latest"
@@ -47,9 +47,9 @@ assert 8888 in devcontainer["forwardPorts"]
 assert devcontainer["postCreateCommand"] == "bash .devcontainer/post-create.sh"
 
 metadata = json.loads((LAB / "lab.json").read_text(encoding="utf-8"))
-assert metadata["spec"]["labPath"] == "modules/SDN_Lab_5/Lab5.ipynb"
+assert metadata["spec"]["labPath"] == "modules/task/task.ipynb"
 assert metadata["spec"]["testPath"] == "sdn_lab_5"
-assert metadata["spec"]["topologyPath"] == "modules/SDN_Lab_5/topology.template.yaml"
+assert metadata["spec"]["topologyPath"] == "modules/task/topology.template.yaml"
 assert metadata["spec"]["types"]["subject"] == "network-lab"
 assert metadata["spec"]["types"]["assessment"] == "automatic-checker"
 assert "github-codespaces" in metadata["spec"]["execution"]
@@ -61,17 +61,17 @@ template = (LAB / "topology.template.yaml").read_text(encoding="utf-8")
 for document in [topology, template]:
     assert "r1:" in document and "s1:" in document
     assert "r1:eth1" in document and "s1:eth1" in document
-    assert "cms-labs-simple-task-sdn-lab-5-node:latest" in document
+    assert "cms-labs-simple-task-node:latest" in document
 assert "name: $NAME" in template and "namespace: $NAME" in template
 yaml_files = sorted(path.name for path in LAB.rglob("*") if path.suffix.lower() in {".yaml", ".yml"})
 assert yaml_files == ["topology.template.yaml"], f"Clabgate would apply unexpected YAML files: {yaml_files}"
 
-notebook = json.loads((LAB / "Lab5.ipynb").read_text(encoding="utf-8"))
+notebook = json.loads((LAB / "task.ipynb").read_text(encoding="utf-8"))
 assert notebook["nbformat"] == 4
-assert any("Лабораторная работа 5" in "".join(cell["source"]) for cell in notebook["cells"])
+assert any("Пример задания" in "".join(cell["source"]) for cell in notebook["cells"])
 for index, cell in enumerate(notebook["cells"]):
     if cell["cell_type"] == "code":
-        ast.parse("".join(cell["source"]), filename=f"Lab5.ipynb:cell-{index}")
+        ast.parse("".join(cell["source"]), filename=f"task.ipynb:cell-{index}")
 
 ast.parse((LAB / "node" / "lab_agent.py").read_text(encoding="utf-8"), filename="lab_agent.py")
 

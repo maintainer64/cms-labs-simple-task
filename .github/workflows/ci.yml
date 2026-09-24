@@ -34,11 +34,11 @@ jobs:
           .devcontainer/post-start.sh
           scripts/lab
           scripts/validate.sh
-          modules/SDN_Lab_5/node/entrypoint.sh
+          modules/task/node/entrypoint.sh
       - name: Lint node Dockerfile
         uses: hadolint/hadolint-action@v3.4.0
         with:
-          dockerfile: modules/SDN_Lab_5/node/Dockerfile
+          dockerfile: modules/task/node/Dockerfile
 
   node-image:
     name: Lab node image smoke
@@ -49,12 +49,12 @@ jobs:
       - name: Build node image
         run: >-
           docker build
-          --tag ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest
-          modules/SDN_Lab_5/node
+          --tag ghcr.io/maintainer64/cms-labs-simple-task-node:latest
+          modules/task/node
       - name: Verify node services
         run: |
           docker run --detach --privileged --name sdn-lab-node -p 18080:8080 \
-            ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest
+            ghcr.io/maintainer64/cms-labs-simple-task-node:latest
           for attempt in $(seq 1 30); do
             curl --fail --silent http://127.0.0.1:18080/state > state.json && break
             sleep 1
@@ -101,8 +101,8 @@ jobs:
           ./scripts/lab status || true
           docker ps -a || true
           docker logs cms-labs-jupyter || true
-          docker logs clab-sdn-lab-5-r1 || true
-          docker logs clab-sdn-lab-5-s1 || true
+          docker logs clab-simple-task-r1 || true
+          docker logs clab-simple-task-s1 || true
       - name: Cleanup
         if: always()
         run: ./scripts/lab down
@@ -131,7 +131,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/${{ github.repository }}-sdn-lab-5-node
+          images: ghcr.io/${{ github.repository }}-node
           tags: |
             type=sha
             type=ref,event=tag
@@ -141,7 +141,7 @@ jobs:
       - name: Build and publish
         uses: docker/build-push-action@v7
         with:
-          context: modules/SDN_Lab_5/node
+          context: modules/task/node
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

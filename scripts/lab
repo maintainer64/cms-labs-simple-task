@@ -2,9 +2,9 @@
 set -euo pipefail
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-lab_dir="$repo_root/modules/SDN_Lab_5"
+lab_dir="$repo_root/modules/task"
 topology="$lab_dir/topology.clab"
-node_image=${SDN_LAB_NODE_IMAGE:-ghcr.io/maintainer64/cms-labs-simple-task-sdn-lab-5-node:latest}
+node_image=${SDN_LAB_NODE_IMAGE:-ghcr.io/maintainer64/cms-labs-simple-task-node:latest}
 jupyter_image=${JUPYTER_IMAGE:-ghcr.io/maintainer64/cms-labs-jupyter:latest}
 checker_image=${CHECKER_IMAGE:-ghcr.io/maintainer64/cms-labs-checker:latest}
 jupyter_name=cms-labs-jupyter
@@ -35,7 +35,7 @@ build_node() {
 }
 
 deploy_topology() {
-  if docker inspect clab-sdn-lab-5-r1 >/dev/null 2>&1 && docker inspect clab-sdn-lab-5-s1 >/dev/null 2>&1; then
+  if docker inspect clab-simple-task-r1 >/dev/null 2>&1 && docker inspect clab-simple-task-s1 >/dev/null 2>&1; then
     return 0
   fi
   containerlab deploy --topo "$topology"
@@ -53,7 +53,7 @@ start_jupyter() {
     --name "$jupyter_name" \
     --network "$network_name" \
     --publish 8888:8888 \
-    --env LAB_NODE_PREFIX=clab-sdn-lab-5 \
+    --env LAB_NODE_PREFIX=clab-simple-task \
     --volume "$lab_dir:/home/jovyan/work" \
     "$jupyter_image" \
     start-notebook.py \
@@ -89,23 +89,23 @@ check() {
     --network "$network_name" \
     --env ATTEMPT_ID=local \
     --env SESSION_ID=local \
-    --env SESSION_NAMESPACE=clab-sdn-lab-5 \
-    --env LAB_PATH=modules/SDN_Lab_5/Lab5.ipynb \
+    --env SESSION_NAMESPACE=simple-task \
+    --env LAB_PATH=modules/task/task.ipynb \
     --env TEST_PATH=sdn_lab_5 \
     "$checker_image" \
     -output -
 }
 
 reset_lab() {
-  docker exec clab-sdn-lab-5-r1 ip address flush dev eth1
-  docker exec clab-sdn-lab-5-s1 ip address flush dev eth1
+  docker exec clab-simple-task-r1 ip address flush dev eth1
+  docker exec clab-simple-task-s1 ip address flush dev eth1
 }
 
 solve_lab() {
-  docker exec clab-sdn-lab-5-r1 ip address replace 10.50.0.1/30 dev eth1
-  docker exec clab-sdn-lab-5-r1 ip link set eth1 up
-  docker exec clab-sdn-lab-5-s1 ip address replace 10.50.0.2/30 dev eth1
-  docker exec clab-sdn-lab-5-s1 ip link set eth1 up
+  docker exec clab-simple-task-r1 ip address replace 10.50.0.1/30 dev eth1
+  docker exec clab-simple-task-r1 ip link set eth1 up
+  docker exec clab-simple-task-s1 ip address replace 10.50.0.2/30 dev eth1
+  docker exec clab-simple-task-s1 ip link set eth1 up
 }
 
 open_lab() {
@@ -114,11 +114,11 @@ open_lab() {
   else
     printf 'JupyterLab: http://127.0.0.1:8888/lab\n'
   fi
-  printf 'Notebook: modules/SDN_Lab_5/Lab5.ipynb\n'
+  printf 'Notebook: modules/task/task.ipynb\n'
 }
 
 ensure() {
-  if ! docker inspect clab-sdn-lab-5-r1 >/dev/null 2>&1 || ! docker inspect "$jupyter_name" >/dev/null 2>&1; then
+  if ! docker inspect clab-simple-task-r1 >/dev/null 2>&1 || ! docker inspect "$jupyter_name" >/dev/null 2>&1; then
     up
   else
     start_jupyter

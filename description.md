@@ -1,12 +1,20 @@
-# Описание SDN_Lab_5
+# Описание задания
 
-`cms-labs-simple-task` содержит одну воспроизводимую лабораторную работу — `SDN_Lab_5`. Репозиторий можно указывать в `CMS_TASK_URL` полной GitHub-ссылкой:
+`cms-labs-simple-task` содержит самостоятельный воспроизводимый пример задания CMS Labs. Это не каталог конкретных курсов: репозиторий можно использовать как шаблон и открывать одним из поддерживаемых способов:
 
 ```text
 CMS_TASK_URL=https://github.com/maintainer64/cms-labs-simple-task
 ```
 
-Лаборатория размещается в `modules/SDN_Lab_5` и не является Git-подмодулем. Это позволяет Clabgate закрепить попытку на одном commit SHA и получить notebook, topology и метаданные согласованной версии.
+Описание задания находится в `modules/task/README.md`, а рабочая тетрадь — в `modules/task/task.ipynb`. Clabgate использует `modules/task` как `labs_path`, закрепляет попытку на одном commit SHA и получает из него topology и метаданные согласованной версии.
+
+Задание можно открыть:
+
+- в GitHub Codespaces — кнопкой в корневом README;
+- локально — через Dev Container и Containerlab;
+- в CMS — через frontend, Clabgate session и Kubernetes namespace.
+
+Во всех режимах используется один и тот же notebook и одна и та же topology. Отличается только способ запуска среды.
 
 ## Типы
 
@@ -20,7 +28,7 @@ CMS_TASK_URL=https://github.com/maintainer64/cms-labs-simple-task
 
 Способы запуска перечисляются отдельно: `github-codespaces`, `local-devcontainer` и `clabgate-kubernetes`. Следующие работы можно будет добавлять в `modules/` без изменения контракта текущей работы.
 
-## SDN_Lab_5
+## Содержание задания
 
 Практическая работа знакомит с программной настройкой Linux-based сетевых узлов через SSH и чтением состояния по SNMP. Студент назначает адреса лабораторному каналу, проверяет связность и получает структурированный отчёт.
 
